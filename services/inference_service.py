@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from typing import Optional, Dict
 from PIL import Image
 import torch
+import torch.nn.functional as F
 import io
 import hashlib
 import json
@@ -72,12 +73,20 @@ class InferenceService:
             
             # Convert output to list for JSON serialization
             logits = output.cpu().numpy().tolist()
+            
+            # Calculate softmax for confidence scores
+            softmax_probs = F.softmax(output, dim=1)
+            confidence = softmax_probs.cpu().numpy().tolist()
+            
             prediction_idx = output.argmax(dim=1).item()
             prediction_label = self.preds_mapper.get(prediction_idx, "unknown")
+            prediction_confidence = softmax_probs[0][prediction_idx].item()
             
             result = {
                 "logits": logits,
+                "confidence": confidence,
                 "prediction": prediction_label,
+                "prediction_confidence": prediction_confidence,
                 "shape": list(output.shape)
             }
             

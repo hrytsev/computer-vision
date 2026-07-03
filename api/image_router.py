@@ -2,7 +2,8 @@ from fastapi import APIRouter, UploadFile, File, Request, Depends
 from config import get_settings
 from services.image_service import ImageService, settings_context
 from services.inference_service import InferenceService
-from api.deps.service_deps import get_image_service, get_inference_service
+from services.model_info_service import ModelInfoService
+from api.deps.service_deps import get_image_service, get_inference_service, get_model_info_service
 from contextvars import copy_context
 from utils.logger import get_logger
 
@@ -101,8 +102,10 @@ async def predict_fracture(
         })
         
         return {
-            "logits":inference_result["logits"],
+            "logits": inference_result["logits"],
+            "confidence": inference_result["confidence"],
             "prediction": inference_result["prediction"],
+            "prediction_confidence": inference_result["prediction_confidence"],
             "shape": inference_result["shape"],
             "filename": image_metadata["filename"],
             "request_id": request_id
@@ -116,3 +119,24 @@ async def predict_fracture(
     finally:
         # Clean up context
         settings_context.reset(token)
+
+
+@ml_router.get("/model-info")
+async def get_model_info(
+    model_info_service: ModelInfoService = Depends(get_model_info_service)
+):
+    """
+    Get model information including name, config details, and JSON metadata.
+    """
+    
+    logger.info("Received model info request")
+    
+    try:
+        model_info = model_info_service.get_model_info()
+        
+        logger.info("Model info retrieved successfully")
+        
+        return model_info
+    except Exception as e:
+        logger.error("Failed to retrieve model info", extra={"error": str(e)})
+        raise
