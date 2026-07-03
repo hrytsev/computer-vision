@@ -5,7 +5,7 @@ from config import get_settings
 from middlewares.cors import add_cors_middleware
 from middlewares.rate_limit import limiter, get_rate_limit_exceeded_handler
 from middlewares.request_id import RequestIDMiddleware
-from api.image_router import router as image_router
+from api.image_router import router as image_router, ml_router
 from utils.logger import setup_logging, get_logger
 
 settings = get_settings()
@@ -38,6 +38,7 @@ app.add_middleware(RequestIDMiddleware)
 
 # Include routers
 app.include_router(image_router)
+app.include_router(ml_router)
 
 
 @app.get("/")

@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     allowed_image_formats: list[str] = ["image/jpeg", "image/png"]
     
     # Model settings
-    model_path: str = "models/model.pth"
+    model_path: str = "models/resnet18_fractured.pth"
     device: str = "cpu"
     
     class ConfigDict:

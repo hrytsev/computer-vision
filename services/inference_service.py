@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from typing import Optional
+from typing import Optional, Dict
 from PIL import Image
 import torch
 import io
@@ -12,8 +12,9 @@ logger = get_logger(__name__)
 class InferenceService:
     """Service for CV model inference"""
     
-    def __init__(self):
+    def __init__(self, preds_mapper: Dict[int, str]):
         self.model_provider = get_model_provider()
+        self.preds_mapper = preds_mapper
     
     async def predict(self, image_bytes: bytes) -> dict:
         """
@@ -50,14 +51,17 @@ class InferenceService:
                 output = model(tensor)
             
             # Convert output to list for JSON serialization
-            predictions = output.cpu().numpy().tolist()
+            logits = output.cpu().numpy().tolist()
+            prediction_idx = output.argmax(dim=1).item()
+            prediction_label = self.preds_mapper.get(prediction_idx, "unknown")
             
             logger.info("Inference completed successfully", extra={
                 "output_shape": output.shape
             })
             
             return {
-                "predictions": predictions,
+                "logits": logits,
+                "prediction": prediction_label,
                 "shape": list(output.shape)
             }
             

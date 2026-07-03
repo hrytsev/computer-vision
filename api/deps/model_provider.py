@@ -5,6 +5,7 @@ from torchvision import transforms
 from PIL import Image
 from config import Settings
 from utils.logger import get_logger
+from models.resnet18 import ResNet18
 
 logger = get_logger(__name__)
 
@@ -48,8 +49,11 @@ class ModelProvider:
         logger.info("Loading model", extra={"path": self.settings.model_path})
         
         try:
-            self._model = torch.load(self.settings.model_path, map_location=self._device)
-            self._model.eval()
+            device = self._device
+            model_loaded = ResNet18(2).to(device)
+            model_loaded.load_state_dict(torch.load(self.settings.model_path, map_location=device))
+            model_loaded.eval().to(device)
+            self._model = model_loaded
             logger.info("Model loaded successfully", extra={
                 "device": str(self._device)
             })
