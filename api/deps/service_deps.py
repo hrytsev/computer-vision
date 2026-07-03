@@ -5,6 +5,7 @@ from db.redis import RedisClient
 from repository.redis import RedisRepository
 from services.image_service import ImageService
 from services.inference_service import InferenceService
+from services.model_info_service import ModelInfoService
 from utils.preds_mapper import PREDS_MAPPER
 
 
@@ -33,3 +34,9 @@ def get_inference_service() -> InferenceService:
     """Get cached inference service instance"""
     redis_repo = get_redis_repository()
     return InferenceService(preds_mapper=PREDS_MAPPER, redis_repo=redis_repo)
+
+
+@lru_cache()
+def get_model_info_service() -> ModelInfoService:
+    """Get cached model info service instance"""
+    return ModelInfoService()

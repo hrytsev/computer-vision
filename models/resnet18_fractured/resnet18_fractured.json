@@ -1,0 +1,23 @@
+{
+  "name": "resnet_fractured",
+  "description": "ResNet18 model for binary classification of bone X-ray images into fracture and normal classes.",
+  "version": "1.0.0",
+  "created_at": "2026-07-03",
+  "framework": "PyTorch",
+  "architecture": "ResNet18",
+  "task": "Binary image classification",
+  "classes": [
+    "fracture",
+    "normal"
+  ],
+  "metrics": {
+    "accuracy": 0.9806996381182147,
+    "precision": 0.968503937007874,
+    "recall": 1.0,
+    "f1_score": 0.984,
+    "confusion_matrix": [
+      [321, 16],
+      [0, 492]
+    ]
+  }
+}

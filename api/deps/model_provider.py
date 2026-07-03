@@ -2,10 +2,9 @@ from functools import lru_cache
 from typing import Protocol
 import torch
 from torchvision import transforms
-from PIL import Image
 from config import Settings
 from utils.logger import get_logger
-from models.resnet18 import ResNet18
+from models.resnet18_fractured.resnet18 import ResNet18
 
 logger = get_logger(__name__)
 
