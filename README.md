@@ -55,6 +55,18 @@ python main.py
 
 The API will be available at `http://localhost:8000`
 
+## Docker
+
+Build the Docker image:
+```bash
+docker build -t resnet-fracture-api .
+```
+
+Run the Docker container:
+```bash
+docker run -p 8000:8000 resnet-fracture-api
+```
+
 ## API Documentation
 
 - Swagger UI: `http://localhost:8000/docs`
@@ -70,6 +82,13 @@ curl http://localhost:8000/health
 ### Test image upload:
 ```bash
 curl -X POST "http://localhost:8000/api/images/upload" \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@/path/to/your/image.jpg"
+```
+
+### Test fracture prediction:
+```bash
+curl -X POST "http://localhost:8000/api/ml/fracture" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@/path/to/your/image.jpg"
 ```
