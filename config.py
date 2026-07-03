@@ -28,6 +28,14 @@ class Settings(BaseSettings):
     model_path: str = "models/resnet18_fractured.pth"
     device: str = "cpu"
     
+    # Redis settings
+    redis_host: str = "localhost"
+    redis_port: int = 6379
+    redis_db: int = 0
+    
+    # Cache settings
+    cache_ttl: int = 60  # seconds
+    
     class ConfigDict:
         env_file = ".env"
         case_sensitive = False
