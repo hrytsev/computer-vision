@@ -56,3 +56,7 @@ Thumbs.db
 
 # Jupyter Notebooks
 .ipynb_checkpoints/
+__pycache__/
+*.py[c]
+*$py.classgit add .gitignore
+git commit -m "Remove Python cache files"
