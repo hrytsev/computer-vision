@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from typing import Optional, Dict
+from typing import Dict
 from PIL import Image
 import torch
 import torch.nn.functional as F

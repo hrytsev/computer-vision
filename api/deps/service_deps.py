@@ -1,5 +1,4 @@
 from functools import lru_cache
-from fastapi import Depends
 from config import get_settings
 from db.redis import RedisClient
 from repository.redis import RedisRepository

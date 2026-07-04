@@ -1,8 +1,5 @@
 import pytest
 from unittest.mock import Mock, AsyncMock, patch
-from pathlib import Path
-from io import BytesIO
-from PIL import Image
 import hashlib
 import json
 
@@ -240,7 +237,6 @@ class TestInferenceService:
     async def test_predict_cache_miss(self, inference_service, mock_redis_repo, mock_model_provider, sample_image_bytes):
         """Test prediction when cache miss occurs"""
         import torch
-        import torch.nn.functional as F
         
         # Setup cache miss
         mock_redis_repo.get.return_value = None

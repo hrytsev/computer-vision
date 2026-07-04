@@ -1,6 +1,5 @@
 import logging
 import json
-import time
 from contextvars import ContextVar
 from typing import Any, Dict
 from datetime import datetime

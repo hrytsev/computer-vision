@@ -1,5 +1,4 @@
 import pytest
-from pathlib import Path
 from io import BytesIO
 from PIL import Image
 import numpy as np

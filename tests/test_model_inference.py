@@ -2,7 +2,6 @@ import pytest
 import torch
 from pathlib import Path
 from PIL import Image
-import io
 
 from models.resnet18_fractured.resnet18 import ResNet18
 from torchvision import transforms
