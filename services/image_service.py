@@ -1,9 +1,7 @@
 from fastapi import UploadFile, HTTPException
-from typing import Optional
 from config import Settings
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from contextvars import ContextVar
-from typing import Annotated
 from utils.logger import get_logger
 
 # Magic bytes for image format validation

@@ -4,7 +4,6 @@ from services.image_service import ImageService, settings_context
 from services.inference_service import InferenceService
 from services.model_info_service import ModelInfoService
 from api.deps.service_deps import get_image_service, get_inference_service, get_model_info_service
-from contextvars import copy_context
 from utils.logger import get_logger
 
 router = APIRouter(prefix="/api/images", tags=["images"])

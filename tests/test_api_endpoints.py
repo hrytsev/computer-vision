@@ -1,7 +1,3 @@
-import pytest
-from pathlib import Path
-from unittest.mock import Mock, AsyncMock
-import torch
 
 
 class TestAPIEndpoints:
@@ -55,7 +51,6 @@ class TestAPIEndpoints:
         }
         
         # Mock inference to return fractured prediction
-        mock_output = torch.tensor([[2.5, -1.0]])  # Higher logit for class 0 (fractured)
         mock_inference_service.predict.return_value = {
             "logits": [[2.5, -1.0]],
             "confidence": [[0.95, 0.05]],

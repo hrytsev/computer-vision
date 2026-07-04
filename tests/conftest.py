@@ -1,14 +1,12 @@
 import pytest
 import asyncio
 from pathlib import Path
-from typing import AsyncGenerator
 from fastapi.testclient import TestClient
-from unittest.mock import Mock, AsyncMock, patch
+from unittest.mock import Mock, AsyncMock
 import torch
 
 from main import app
 from config import get_settings
-from api.deps.model_provider import get_model_provider
 from api.deps.service_deps import get_image_service, get_inference_service, get_model_info_service
 from services.image_service import ImageService
 from services.inference_service import InferenceService
