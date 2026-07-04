@@ -114,6 +114,41 @@ This project addresses the critical need for automated fracture detection in med
 
 The API is designed for integration with hospital information systems, telemedicine platforms, and research workflows.
 
+### Important Disclaimer
+
+**This project is for demonstration and educational purposes only.** It is not intended for use in actual medical diagnosis, treatment, or any clinical decision-making. The model predictions should not be relied upon for medical advice. Always consult qualified healthcare professionals for medical diagnosis and treatment.
+
+## Dataset
+
+The model is trained on the **Bone Fracture Dataset** from Kaggle, which contains approximately 10,000 X-ray images of fractured and non-fractured bones.
+
+### Dataset Overview
+
+- **Total Images**: ~9,463 files
+- **Classes**: 2 (fractured, not_fractured)
+- **Format**: X-ray images organized in training and testing directories
+- **Size**: 182.28 MB
+- **Source**: [Kaggle Bone Fracture Dataset](https://www.kaggle.com/datasets/osamajalilhassan/bone-fracture-dataset)
+
+### Dataset Structure
+
+```
+BoneFractureDataset/
+├── training/
+│   ├── fractured/
+│   └── not_fractured/
+└── testing/
+    ├── fractured/
+    └── not_fractured/
+```
+
+### Dataset Characteristics
+
+The dataset focuses on medical imaging for bone fracture detection from X-ray images. Manual examination of X-rays is time-consuming and prone to errors, so automated techniques are valuable for:
+- Assessing severity of bone injuries from trauma or accidents
+- Detecting fractures in long bones (challenging due to limited resolution and complex bone structures)
+- Providing consistent preliminary assessments
+
 ## ML Metrics & Evaluation
 
 The fracture detection model returns comprehensive metrics for each prediction:
