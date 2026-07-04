@@ -6,6 +6,10 @@ from contextvars import ContextVar
 from typing import Annotated
 from utils.logger import get_logger
 
+# Magic bytes for image format validation
+JPEG_MAGIC = [0xFF, 0xD8, 0xFF]
+PNG_MAGIC = [0x89, 0x50, 0x4E, 0x47, 0x44, 0x49, 0x48]
+
 # Context variable for settings
 settings_context: ContextVar[Settings] = ContextVar('settings_context')
 
@@ -19,6 +23,35 @@ class ImageService(BaseModel):
     def get_settings(cls) -> Settings:
         """Get settings from context"""
         return settings_context.get()
+    
+    def _validate_magic_bytes(self, content: bytes, content_type: str) -> None:
+        """
+        Validate file magic bytes match the declared content type.
+        
+        Args:
+            content: Raw file content bytes
+            content_type: Declared content type (e.g., 'image/jpeg')
+            
+        Raises:
+            HTTPException: If magic bytes don't match the content type
+        """
+        # Get first few bytes for magic byte check
+        header = list(content[:8])
+        
+        if content_type == "image/jpeg":
+            if header[:3] != JPEG_MAGIC:
+                logger.warning("JPEG magic bytes mismatch", extra={"header": header[:3]})
+                raise HTTPException(
+                    status_code=400,
+                    detail="Invalid JPEG file: magic bytes do not match"
+                )
+        elif content_type == "image/png":
+            if header[:7] != PNG_MAGIC:
+                logger.warning("PNG magic bytes mismatch", extra={"header": header[:7]})
+                raise HTTPException(
+                    status_code=400,
+                    detail="Invalid PNG file: magic bytes do not match"
+                )
     
     async def validate_and_process_image(self, file: UploadFile) -> dict:
         """
@@ -56,9 +89,12 @@ class ImageService(BaseModel):
                 detail="Invalid file extension. Only .jpg, .jpeg, and .png are allowed"
             )
         
-        # Read file content to validate size
+        # Read file content to validate size and magic bytes
         content = await file.read()
         file_size_mb = len(content) / (1024 * 1024)
+        
+        # Validate magic bytes
+        self._validate_magic_bytes(content, file.content_type)
         
         logger.info("File size validated", extra={"size_mb": round(file_size_mb, 2)})
         
