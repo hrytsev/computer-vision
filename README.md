@@ -41,6 +41,20 @@ RATE_LIMIT_PERIOD=60
 MAX_IMAGE_SIZE_MB=10.0
 ```
 
+## Image Validation
+
+Images are validated with multiple checks:
+- **Content type**: `image/jpeg`, `image/png` only
+- **Extension**: `.jpg`, `.jpeg`, `.png` only
+- **Size**: Max 10MB (configurable via `MAX_IMAGE_SIZE_MB`)
+- **Magic bytes**: Verifies file signature matches content type (prevents spoofing)
+
+Configuration:
+```env
+MAX_IMAGE_SIZE_MB=10.0
+ALLOWED_IMAGE_FORMATS=image/jpeg,image/png
+```
+
 ## Running the Application
 
 Start the server:
