@@ -1,6 +1,6 @@
 from pydantic_settings import BaseSettings
 from functools import lru_cache
-
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "ResNet Fracture API"
@@ -12,9 +12,10 @@ class Settings(BaseSettings):
     port: int = 8001
     
     # CORS settings
-    cors_origins: list[str] = ["*"]
-    cors_methods: list[str] = ["*"]
-    cors_headers: list[str] = ["*"]
+    # Comma-separated list of allowed origins, e.g., "http://localhost:3000,https://example.com"
+    cors_origins: list[str] = []
+    cors_methods: list[str] = ["GET", "POST"]
+    cors_headers: list[str] = ["Content-Type", "Authorization"]
     
     # Rate limiting
     rate_limit_requests: int = 100
@@ -35,12 +36,12 @@ class Settings(BaseSettings):
     
     # Cache settings
     cache_ttl: int = 60  # seconds
-    
-    class ConfigDict:
-        env_file = ".env"
-        case_sensitive = False
-        protected_namespaces = ("settings_",)
 
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=False,
+        protected_namespaces=("settings_",),
+    )
 
 @lru_cache()
 def get_settings() -> Settings:
