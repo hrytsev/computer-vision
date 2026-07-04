@@ -15,6 +15,8 @@ class TestModelInference:
     def model(self):
         """Load the actual model for testing"""
         model = ResNet18(num_classes=2)
+        checkpoint_path = Path(__file__).parent.parent / "models" / "resnet18_fractured" / "resnet18_fractured.pth"
+        model.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
         model.eval()
         return model
     
@@ -59,7 +61,7 @@ class TestModelInference:
         prediction_idx = output.argmax(dim=1).item()
         prediction_label = "fractured" if prediction_idx == 0 else "not fractured"
         
-        assert prediction_idx == 0, f"Expected fractured (0), got {prediction_label} ({prediction_idx})"
+        assert prediction_label=="fractured", f"Expected fractured (0), got {prediction_label} ({prediction_idx})"
     
     def test_not_fractured_image_prediction(self, model, not_fractured_image_tensor):
         """Test that not fractured image is predicted as not fractured"""
@@ -69,7 +71,7 @@ class TestModelInference:
         prediction_idx = output.argmax(dim=1).item()
         prediction_label = "fractured" if prediction_idx == 0 else "not fractured"
         
-        assert prediction_idx == 1, f"Expected not fractured (1), got {prediction_label} ({prediction_idx})"
+        assert prediction_label=="not fractured", f"Expected not fractured (1), got {prediction_label} ({prediction_idx})"
     
     def test_model_forward_pass(self, model):
         """Test that model forward pass works with random input"""
